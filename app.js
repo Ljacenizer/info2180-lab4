@@ -1,13 +1,20 @@
-window.addEventListener('load', function(){
-    var searchButton = document.querySelector("btn");
-    var url = "http://localhost/info2180-lab4/superheroes.php";
+window.addEventListener('load', () => {
 
-
-    searchButton.addEventListener('click', function(event){
+    document.querySelector("button").addEventListener("click", (event) => {
         event.preventDefault();
-        fetch(url)
-        .then(response => response.text())
-        .then(text => alert(text))
-        .catch(error => {console.log("Unable to complete this request! Please try again.")});
+
+        let result = document.querySelector("div#result");
+
+        fetch(`superheroes.php?query= ${document.querySelector("input#searchbar").value.replace(/[-&\/\\#,+()$@|~%!.'":;*?<>{}]/g,'')}`.replace(/"[^-0-9+&@#/%?=~_|!:,.;\(\)]"/g, ''), { method: 'GET' })
+            .then(resp => resp.text())
+            .then(data => {
+                let e1 = document.createElement("h2");
+                e1.appendChild(document.createTextNode("RESULT"));
+                let e2 = document.createElement("hr");
+                result.innerHTML = '';
+                result.innerHTML = data;
+                result.prepend(e1, e2)
+            })
     });
+
 });
